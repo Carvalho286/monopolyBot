@@ -1,0 +1,2 @@
+# monopolyBot
+ MonopolyGo Discord Bot
