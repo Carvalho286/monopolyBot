@@ -21,7 +21,10 @@ module.exports = {
             const user = interaction.user;
             await user.send(`Please reply with \`!verify ${code}\` to verify yourself.`);
 
-            await interaction.reply('A verification code has been sent to your DM. Please check your DMs.');
+            await interaction.reply({
+                content: 'A verification code has been sent to your DMs. Please check your DMs.',
+                ephemeral: true
+            });
 
             const filter = (message) => message.author.id === user.id && message.content.startsWith('!verify');
             const collected = await user.dmChannel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] });

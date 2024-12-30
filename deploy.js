@@ -32,7 +32,7 @@ const slashRegister = async () => {
                     description: "Verify yourself as a member.",
                 }
             ]
-        })
+        });
     } catch (err) {
         console.log(err);
     }
