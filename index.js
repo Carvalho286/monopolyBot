@@ -3,12 +3,15 @@ const fs = require('fs');
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.Guilds,           
-        Discord.GatewayIntentBits.GuildMessages,   
-        Discord.GatewayIntentBits.MessageContent 
+        Discord.GatewayIntentBits.GuildMessages,  
+        Discord.GatewayIntentBits.DirectMessages,   
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.GuildMembers 
     ]
 });
 
 const colors = require("./colors.json");
+const verificationCommand = require('./verification/verification.js');
 
 let config;
 try {
@@ -28,6 +31,22 @@ client.on('ready', async () => {
   
 });
 
+client.on('guildMemberAdd', async (member) => {
+    try {
+        const roleId = config.unverifiedId;
+        const role = member.guild.roles.cache.get(roleId);
+
+        if (!role) {
+            console.error('Role not found.');
+            return;
+        }
+
+        await member.roles.add(role);
+    } catch (error) {
+        console.error('Error assigning role to new member:', error);
+    }
+});
+
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
@@ -45,13 +64,12 @@ client.on('messageCreate', async (message) => {
 
             try {
                 await message.delete();
-                console.log(`Mensagem apagada: ${message.content}`);
             } catch (error) {
                 console.error(`Erro ao apagar mensagem: ${error.message}`);
             }
 
             if (message.channel.permissionsFor(client.user).has("SendMessages")) {
-                await message.channel.send(`${message.author}, apenas links de "monopolygo.com" são permitidos neste canal.`);
+                await message.channel.send(`${message.author}, only monopoly friend link allowed in this chat.`);
             }
         }
     }
@@ -60,21 +78,22 @@ client.on('messageCreate', async (message) => {
 
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
+
         if (interaction.commandName === "ping") {
             interaction.reply("pong");
         }
-        if (interaction.commandName === "criador") {
+        if (interaction.commandName === "developer") {
             const url = 'https://cdn.discordapp.com/avatars/280990969460031488/a_ef71a6f5cbba50d6655dcf4ff40d03b0.gif';
             
             const embed = new Discord.EmbedBuilder()
                 .setColor(colors.purple)
-                .setTitle('Sobre o criador')
+                .setTitle('About the developer')
                 .setAuthor({ name: 'K0baCK', iconURL: url })
-                .setDescription('Aqui estão algumas informações sobre o criador.')
+                .setDescription('Somethings about the developer')
                 .setThumbnail(url)
                 .addFields(
-                    { name: '**Nome:**', value: 'K0baCK' },
-                    { name: '**Ocupações:**', value: 'Web Developer / App Developer'},
+                    { name: '**Name:**', value: 'K0baCK' },
+                    { name: '**Occupation:**', value: 'Web Developer / App Developer'},
                     { name: '**GitHub:**', value: 'https://github.com/Carvalho286', inline: true },
                     { name: '**Website:**', value: 'https://guthib.com', inline: true },
                     { name: '\u200B', value: '\u200B' }
@@ -84,8 +103,25 @@ client.on("interactionCreate", async (interaction) => {
 
             await interaction.reply({ embeds: [embed] });
         }
-        if (interaction.commandName === "wassup") {
-            interaction.reply("Sigam todos o rei Wassup https://www.twitch.tv/the_hagith");
+        if (interaction.commandName === "verify") {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+
+            const unverifiedRoleId = config.unverifiedId; 
+
+            if (!member.roles.cache.has(unverifiedRoleId)) {
+                return interaction.reply({
+                    content: 'You are already verified!',
+                    ephemeral: true
+                });
+            }
+            try {
+                await verificationCommand.execute(interaction); 
+            } catch (error) {
+                await interaction.reply({ content: 'Error!', ephemeral: true });
+            }
         }
     }
 });

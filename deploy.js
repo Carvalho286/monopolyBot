@@ -24,9 +24,13 @@ const slashRegister = async () => {
                     description: "Just a simple ping command, no less."
                 },
                 {
-                    name: "criador",
-                    description: "O meu criador",
+                    name: "developer",
+                    description: "My developer",
                 },
+                {
+                    name: "verify",
+                    description: "Verify yourself as a member.",
+                }
             ]
         })
     } catch (err) {
