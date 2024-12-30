@@ -1,0 +1,38 @@
+This is the Privacy Policy
+
+1. Introduction
+This Privacy Policy explains how (the "Bot") collects, uses, and protects information from users ("you" or "users") when you use the Bot within Discord. By using the Bot, you agree to the collection and use of information in accordance with this policy.
+
+2. Information Collection
+User Data: The Bot may collect information that is necessary for its operation, including but not limited to:
+Usernames and user IDs
+Messages and commands sent to the Bot
+Server IDs and channel IDs where the Bot is used
+
+3. Use of Information
+Service Operation: The information collected is used to operate, maintain, and provide the features and functionality of the Bot.
+Improvement: Data may be analyzed to improve the Bot's performance, add new features, and enhance user experience.
+Communication: The Bot may use user information to communicate with users about updates, features, or issues related to the Bot.
+
+4. Data Sharing and Disclosure
+Third Parties: The Bot's creators do not sell, trade, or otherwise transfer user data to third parties. User data may be shared with trusted third-party service providers to help operate the Bot, provided they agree to keep the information confidential.
+Legal Requirements: User data may be disclosed if required by law or in response to valid requests by public authorities (e.g., a court or government agency).
+
+5. Data Security
+Protection Measures: Reasonable security measures are implemented to protect user data from unauthorized access, alteration, disclosure, or destruction.
+No Guarantee: While the Bot's creators strive to use commercially acceptable means to protect your information, no method of transmission over the Internet or method of electronic storage is 100% secure, and absolute security cannot be guaranteed.
+
+6. Data Retention
+Retention Period: User data is retained for as long as necessary to fulfill the purposes for which it was collected or as required by law.
+Data Deletion: Users may request the deletion of their data by contacting the Bot's creators. The Bot's creators will endeavor to delete the data as requested, except where the Bot is required to retain the information by law.
+
+7. Children's Privacy
+The Bot is not intended for use by individuals under the age of 13. The Bot's creators do not knowingly collect personal information from children under 13. If it is discovered that a child under 13 has provided personal information, such information will be deleted promptly.
+
+8. Changes to This Privacy Policy
+The Bot's creators reserve the right to update or change this Privacy Policy at any time. Users will be notified of any significant changes. Continued use of the Bot after any changes constitutes acceptance of the new Privacy Policy.
+
+9. Contact Information
+If you have any questions about this Privacy Policy, please contact koback on Discord.
+
+By using this bot, you acknowledge that you have read, understood, and agree to the terms of this Privacy Policy.
