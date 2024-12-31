@@ -24,6 +24,8 @@ try {
     process.exit(1);
 }
 
+const allowedUsers = [config.idKoback, config.idPiloto];
+
 client.on('ready', async () => {
     console.log(`----------------------------------------------`);
     console.log(`${client.user.username} está online!`);
@@ -50,7 +52,13 @@ client.on('guildMemberAdd', async (member) => {
     usersJoined++;
     try {
         const roleId = config.unverifiedId;
+        const tagsRoleId = config.tagsRole;
+        const verificationRoleId = config.verificationRole
+        const notificationsRoleId = config.notificationRole;
         const role = member.guild.roles.cache.get(roleId);
+        const tagsRole = member.guild.roles.cache.get(tagsRoleId);
+        const verificationRole = member.guild.roles.cache.get(verificationRoleId);
+        const notificationsRole = member.guild.roles.cache.get(notificationsRoleId);
 
         if (!role) {
             console.error('Role not found.');
@@ -58,6 +66,9 @@ client.on('guildMemberAdd', async (member) => {
         }
 
         await member.roles.add(role);
+        await member.roles.add(verificationRole);
+        await member.roles.add(tagsRole);
+        await member.roles.add(notificationsRole);
     } catch (error) {
         console.error('Error assigning role to new member:', error);
     }
@@ -108,37 +119,39 @@ client.on('messageCreate', async (message) => {
 
     if (message.content === '!verifytext') {
         // Create the embed
+        await message.channel.send("Welcome to the Monopoly Services Lucky Roll! Press the buttons below to assign yourself roles for updates.");
         const embed = new EmbedBuilder()
-            .setTitle('🔒 Verification Required!')
-            .setDescription('Welcome to the server! To gain full access, you need to complete the verification process. This helps us keep the community safe and organized.')
-            .setColor(14745344)
+            .setTitle('Self-Role Assignment')
+            .setDescription('Press the corresponding button to assign yourself roles for updates.')
+            .setColor(15466240)
             .addFields(
                 {
-                    name: 'Why Verify?',
-                    value: '- Gain access to exclusive channels.\n- Interact with the community.\n- Participate in events and discussions.'
+                    name: '🎮 Game Updates',
+                    value: 'Press the 🎮 button to receive notifications about game updates.'
                 },
                 {
-                    name: 'How to Verify?',
-                    value: 'Simply use the `/verify` command in this channel or click the verification button below.'
-                },
-                {
-                    name: 'Need Help?',
-                    value: 'If you\'re having trouble verifying, feel free to contact a moderator for assistance.'
+                    name: '🔧 Service Updates',
+                    value: 'Press the 🔧 button to receive notifications about service updates.'
                 }
             )
             .setFooter({
-                text: 'Thank you for joining us!',
-                iconURL: 'https://cdn.discordapp.com/attachments/931866548249985036/1323351685845745766/logoDiscordBot.png'
-            });
+                text: 'Lucky Roll Services'
+            })
+            .setThumbnail('https://i.imgur.com/shRl0WX.png');
 
         // Create the button
-        const button = new ButtonBuilder()
-            .setCustomId('verify_button') // Identifier for the button interaction
-            .setLabel('Verify') // Text displayed on the button
-            .setStyle(ButtonStyle.Primary); // Button style (e.g., Primary, Success, Danger)
+        const button1 = new ButtonBuilder()
+            .setCustomId('gameUpdate') // Identifier for the button interaction
+            .setLabel('🎮') // Text displayed on the button
+            .setStyle(ButtonStyle.Success); // Button style (e.g., Primary, Success, Danger)
+
+        const button2 = new ButtonBuilder()
+            .setCustomId('serviceUpdate') // Identifier for the button interaction
+            .setLabel('🔧') // Text displayed on the button
+            .setStyle(ButtonStyle.Danger); // Button style (e.g., Primary, Success, Danger)
 
         // Create an action row to hold the button
-        const actionRow = new ActionRowBuilder().addComponents(button);
+        const actionRow = new ActionRowBuilder().addComponents(button1, button2);
 
         // Send the embed with the button
         await message.channel.send({ embeds: [embed], components: [actionRow] });
@@ -166,6 +179,36 @@ client.on("interactionCreate", async (interaction) => {
                 await verificationCommand.execute(interaction); 
             } catch (error) {
                 await interaction.reply({ content: 'Error!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == 'gameUpdate') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.gameUpdateRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Game updates role removed!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Game updates role added!', ephemeral: true });
+            }
+        }
+        if (interaction.customId =='serviceUpdate') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.serviceUpdateRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Service updates role removed!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Service updates role added!', ephemeral: true });
             }
         }
     }
@@ -213,6 +256,28 @@ client.on("interactionCreate", async (interaction) => {
                 await verificationCommand.execute(interaction); 
             } catch (error) {
                 await interaction.reply({ content: 'Error!', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "client") {
+            if (!allowedUsers.includes(interaction.user.id)) {
+                return interaction.reply({
+                    content: 'You do not have permission to do that lol.',
+                    ephemeral: true
+                });
+            }
+
+            const user = interaction.options.getUser("user");
+            if (!user) {
+                return interaction.reply("User not found.");
+            }
+
+            const member = await interaction.guild.members.fetch(user.id);
+            const role = interaction.guild.roles.cache.find(r => r.id === config.clientId);
+            if (member) {
+                await member.roles.add(role);
+                interaction.reply(`${member.user.tag} has become a client`);
+            } else {
+                interaction.reply("Not found.");
             }
         }
     }

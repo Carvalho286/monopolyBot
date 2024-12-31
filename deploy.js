@@ -30,7 +30,19 @@ const slashRegister = async () => {
                 {
                     name: "verify",
                     description: "Verify yourself as a member.",
-                }
+                },
+                {
+                    name: "client",
+                    description: "Turn a verified user into a Client.",
+                    options: [
+                        {
+                            name: "user",
+                            type: 6, // USER type
+                            description: "The person who is becoming a client",
+                            required: true
+                        }
+                    ]
+                },
             ]
         });
     } catch (err) {
