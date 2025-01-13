@@ -44,9 +44,15 @@ module.exports = {
                     return;
                 }
 
+                const logChannel = interaction.guild.channels.cache.get(config.logChatId);
+                if (logChannel) {
+                    await logChannel.send(`${user.tag} has been verified and assigned the verified role.`);
+                }
+
                 await interaction.guild.members.cache.get(user.id).roles.add(role);
                 await interaction.guild.members.cache.get(user.id).roles.remove(removeRole);
                 await user.send(`${user.tag} you have been verified.`);
+                
             } else {
                 await user.send('The verification code you entered is incorrect. Please send /verify on group again');
             }

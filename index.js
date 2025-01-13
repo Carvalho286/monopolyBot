@@ -13,6 +13,11 @@ const client = new Discord.Client({
 
 const colors = require("./colors.json");
 const verificationCommand = require('./verification/verification.js');
+const supportCommand = require('./ticketSystem/support.js');
+const stickerCommand = require('./ticketSystem/sticker.js');
+const eventCommand = require('./ticketSystem/event.js');
+const barCommand = require('./ticketSystem/bar.js');
+const diceCommand = require('./ticketSystem/dice.js');
 let usersJoined = 0;
 let usersLeft = 0;
 
@@ -22,6 +27,15 @@ try {
 } catch (error) {
     console.error('Erro ao carregar config.json:', error.message);
     process.exit(1);
+}
+
+const eventFiles = fs.readdirSync('./ticketSystem').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+    const event = require(`./ticketSystem/${file}`);
+    if (event.data && event.execute) {
+        client.commands.set(event.name, event);
+    }
 }
 
 const allowedUsers = [config.idKoback, config.idPiloto];
@@ -95,7 +109,7 @@ client.on('messageCreate', async (message) => {
     
             try {
                 // Fetch the log channel
-                const logChannel = await client.channels.fetch(config.logLinkChatId);
+                const logChannel = await client.channels.fetch(config.logChatId);
                 if (!logChannel) {
                     console.error('Log channel not found.');
                     return;
@@ -256,6 +270,46 @@ client.on("interactionCreate", async (interaction) => {
                 await verificationCommand.execute(interaction); 
             } catch (error) {
                 await interaction.reply({ content: 'Error!', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "support") {
+            try {
+                await supportCommand.execute(interaction);
+            } catch (error) {
+                console.error('Error executing support command:', error);
+                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "sticker") {
+            try {
+                await stickerCommand.execute(interaction);
+            } catch (error) {
+                console.error('Error executing support command:', error);
+                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "event") {
+            try {
+                await eventCommand.execute(interaction);
+            } catch (error) {
+                console.error('Error executing support command:', error);
+                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "bar") {
+            try {
+                await barCommand.execute(interaction);
+            } catch (error) {
+                console.error('Error executing support command:', error);
+                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+            }
+        }
+        if (interaction.commandName === "dice") {
+            try {
+                await diceCommand.execute(interaction);
+            } catch (error) {
+                console.error('Error executing support command:', error);
+                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
             }
         }
         if (interaction.commandName === "client") {

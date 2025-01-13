@@ -43,6 +43,26 @@ const slashRegister = async () => {
                         }
                     ]
                 },
+                {
+                    name: 'support',
+                    description: 'Send a ticket creation embed.',
+                },
+                {
+                    name: 'sticker',
+                    description: 'Send a sticker ticket creation embed.',
+                },
+                {
+                    name: 'event',
+                    description: 'Send a buy event win ticket creation embed.',
+                },
+                {
+                    name: 'bar',
+                    description: 'Send a bar completion ticket creation embed.',
+                },
+                {
+                    name: 'dice',
+                    description: 'Send a dice boosting ticket creation embed.',
+                },
             ]
         });
     } catch (err) {
