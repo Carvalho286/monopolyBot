@@ -37,7 +37,7 @@ const slashRegister = async () => {
                     options: [
                         {
                             name: "user",
-                            type: 6, // USER type
+                            type: 6, 
                             description: "The person who is becoming a client",
                             required: true
                         }

@@ -69,10 +69,12 @@ client.on('guildMemberAdd', async (member) => {
         const tagsRoleId = config.tagsRole;
         const verificationRoleId = config.verificationRole
         const notificationsRoleId = config.notificationRole;
+        const otherTagsRoleId = config.otherTagsRole;
         const role = member.guild.roles.cache.get(roleId);
         const tagsRole = member.guild.roles.cache.get(tagsRoleId);
         const verificationRole = member.guild.roles.cache.get(verificationRoleId);
         const notificationsRole = member.guild.roles.cache.get(notificationsRoleId);
+        const otherTagsRole = member.guild.roles.cache.get(otherTagsRoleId);
 
         if (!role) {
             console.error('Role not found.');
@@ -83,6 +85,7 @@ client.on('guildMemberAdd', async (member) => {
         await member.roles.add(verificationRole);
         await member.roles.add(tagsRole);
         await member.roles.add(notificationsRole);
+        await member.roles.add(otherTagsRole);
     } catch (error) {
         console.error('Error assigning role to new member:', error);
     }
@@ -108,17 +111,14 @@ client.on('messageCreate', async (message) => {
             }
     
             try {
-                // Fetch the log channel
                 const logChannel = await client.channels.fetch(config.logChatId);
                 if (!logChannel) {
                     console.error('Log channel not found.');
                     return;
                 }
     
-                // Log the deleted message details
                 await logChannel.send(`Message deleted from ${message.author.tag} (ID: ${message.author.id}):\nContent: "${message.content}"`);
     
-                // Delete the message
                 await message.delete();
             } catch (error) {
                 console.error(`Erro ao apagar mensagem: ${error.message}`);
@@ -132,42 +132,52 @@ client.on('messageCreate', async (message) => {
     
 
     if (message.content === '!verifytext') {
-        // Create the embed
-        await message.channel.send("Welcome to the Monopoly Services Lucky Roll! Press the buttons below to assign yourself roles for updates.");
         const embed = new EmbedBuilder()
-            .setTitle('Self-Role Assignment')
-            .setDescription('Press the corresponding button to assign yourself roles for updates.')
+            .setTitle('Networth Roles')
+            .setDescription('For additional roles, you can show everyone your networth on our server. Just press the networth button that applies to you.')
             .setColor(15466240)
-            .addFields(
-                {
-                    name: '🎮 Game Updates',
-                    value: 'Press the 🎮 button to receive notifications about game updates.'
-                },
-                {
-                    name: '🔧 Service Updates',
-                    value: 'Press the 🔧 button to receive notifications about service updates.'
-                }
-            )
             .setFooter({
                 text: 'Lucky Roll Services'
             })
-            .setThumbnail('https://i.imgur.com/shRl0WX.png');
+            .setThumbnail('logo.png');
 
-        // Create the button
         const button1 = new ButtonBuilder()
-            .setCustomId('gameUpdate') // Identifier for the button interaction
-            .setLabel('🎮') // Text displayed on the button
-            .setStyle(ButtonStyle.Success); // Button style (e.g., Primary, Success, Danger)
+            .setCustomId('1k') 
+            .setLabel('<:networth1:1331805681040228392> 1K+') 
+            .setStyle(ButtonStyle.Success);
 
         const button2 = new ButtonBuilder()
-            .setCustomId('serviceUpdate') // Identifier for the button interaction
-            .setLabel('🔧') // Text displayed on the button
-            .setStyle(ButtonStyle.Danger); // Button style (e.g., Primary, Success, Danger)
+            .setCustomId('5k') 
+            .setLabel('<:networth1:1331805681040228392> 5K+') 
+            .setStyle(ButtonStyle.Success);
 
-        // Create an action row to hold the button
-        const actionRow = new ActionRowBuilder().addComponents(button1, button2);
+        const button3 = new ButtonBuilder()
+            .setCustomId('10k') 
+            .setLabel('<:networth1:1331805681040228392> 10K+') 
+            .setStyle(ButtonStyle.Success);
 
-        // Send the embed with the button
+        const button4 = new ButtonBuilder()
+            .setCustomId('15k')
+            .setLabel('<:networth1:1331805681040228392> 15K+')
+            .setStyle(ButtonStyle.Success);
+
+        const button5 = new ButtonBuilder()
+            .setCustomId('20k')
+            .setLabel('<:networth1:1331805681040228392> 20K+')
+            .setStyle(ButtonStyle.Success);
+
+        const button6 = new ButtonBuilder()
+            .setCustomId('30k')
+            .setLabel('<:networth1:1331805681040228392> 30K+')
+            .setStyle(ButtonStyle.Success);
+        
+        const button7 = new ButtonBuilder()
+            .setCustomId('40k')
+            .setLabel('<:networth1:1331805681040228392> 40K+')
+            .setStyle(ButtonStyle.Success);
+
+        const actionRow = new ActionRowBuilder().addComponents(button1, button2, button3, button4, button5, button6, button7);
+
         await message.channel.send({ embeds: [embed], components: [actionRow] });
     }
 });
@@ -223,6 +233,111 @@ client.on("interactionCreate", async (interaction) => {
             } else {
                 await member.roles.add(role);
                 interaction.reply({ content: 'Service updates role added!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '1k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.onekRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '5k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.fivekRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '10k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.tenkRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '15k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.fifteenkRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '20k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.twentykRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '30k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.thirtykRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+            }
+        }
+        if (interaction.customId == '40k') {
+            const member = interaction.guild.members.cache.get(interaction.user.id);
+            if (!member) {
+                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+            }
+            const roleId = config.fortykRole;
+            const role = member.guild.roles.cache.get(roleId);
+            if (member.roles.cache.has(roleId)) {
+                await member.roles.remove(role);
+                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+            } else {
+                await member.roles.add(role);
+                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
             }
         }
     }
@@ -356,11 +471,9 @@ setInterval(async () => {
             - Users left: ${usersLeft}
         `;
 
-        // Send the message to the user
         await kobackUser.send(reportMessage);
         await pilotoUser.send(reportMessage);
 
-        // Reset counters for the next 24 hours
         usersJoined = 0;
         usersLeft = 0;
     } catch (error) {
