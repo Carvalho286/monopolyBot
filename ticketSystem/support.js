@@ -12,7 +12,7 @@ let config;
 try {
   config = JSON.parse(fs.readFileSync("config.json", "utf8"));
 } catch (error) {
-  console.error("Erro ao carregar config.json:", error.message);
+  console.error("Error loading config.json:", error.message);
   process.exit(1);
 }
 
@@ -54,7 +54,7 @@ module.exports = {
     });
 
     interaction.reply({
-      content: "Ticket creation embed sent successfully.",
+      content: "Support ticket creation embed sent successfully.",
       ephemeral: true,
     });
 
@@ -94,7 +94,7 @@ module.exports = {
             ],
           },
           ...allowedUserIds.map((id) => ({
-            id: id,
+            id,
             allow: [
               PermissionsBitField.Flags.ViewChannel,
               PermissionsBitField.Flags.SendMessages,
@@ -125,7 +125,7 @@ module.exports = {
       });
 
       await buttonInteraction.reply({
-        content: `Your ticket has been created: ${ticketChannel}`,
+        content: `Your support ticket has been created: ${ticketChannel}`,
         ephemeral: true,
       });
 
