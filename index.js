@@ -129,54 +129,50 @@ client.on('messageCreate', async (message) => {
             }
         }
     }
-    
 
     if (message.content === '!verifytext') {
+        const emoji = client.emojis.cache.find(emoji => emoji.name === "networth1");
         const embed = new EmbedBuilder()
-            .setTitle('Networth Roles')
+            .setTitle(`Networth Roles`)
             .setDescription('For additional roles, you can show everyone your networth on our server. Just press the networth button that applies to you.')
             .setColor(15466240)
             .setFooter({
                 text: 'Lucky Roll Services'
             })
-            .setThumbnail('logo.png');
+            .setThumbnail('https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png?token=GHSAT0AAAAAAC5HEE6TLFPSOO3DT3YP7EM6Z4RWXSQ');
 
         const button1 = new ButtonBuilder()
             .setCustomId('1k') 
-            .setLabel('<:networth1:1331805681040228392> 1K+') 
-            .setStyle(ButtonStyle.Success);
+            .setLabel(`1K+`)
+            .setEmoji(`${emoji}`)
+            .setStyle(ButtonStyle.Secondary);
 
         const button2 = new ButtonBuilder()
             .setCustomId('5k') 
-            .setLabel('<:networth1:1331805681040228392> 5K+') 
-            .setStyle(ButtonStyle.Success);
+            .setLabel(`5K+`)
+            .setEmoji(`${emoji}`) 
+            .setStyle(ButtonStyle.Secondary);
 
         const button3 = new ButtonBuilder()
             .setCustomId('10k') 
-            .setLabel('<:networth1:1331805681040228392> 10K+') 
-            .setStyle(ButtonStyle.Success);
+            .setLabel(`10K+`)
+            .setEmoji(`${emoji}`) 
+            .setStyle(ButtonStyle.Secondary);
 
-        const button4 = new ButtonBuilder()
-            .setCustomId('15k')
-            .setLabel('<:networth1:1331805681040228392> 15K+')
-            .setStyle(ButtonStyle.Success);
 
         const button5 = new ButtonBuilder()
             .setCustomId('20k')
-            .setLabel('<:networth1:1331805681040228392> 20K+')
-            .setStyle(ButtonStyle.Success);
+            .setLabel(`20K+`)
+            .setEmoji(`${emoji}`)
+            .setStyle(ButtonStyle.Secondary);
 
         const button6 = new ButtonBuilder()
             .setCustomId('30k')
-            .setLabel('<:networth1:1331805681040228392> 30K+')
-            .setStyle(ButtonStyle.Success);
-        
-        const button7 = new ButtonBuilder()
-            .setCustomId('40k')
-            .setLabel('<:networth1:1331805681040228392> 40K+')
-            .setStyle(ButtonStyle.Success);
+            .setLabel(`30K+`)
+            .setEmoji(`${emoji}`)
+            .setStyle(ButtonStyle.Secondary);
 
-        const actionRow = new ActionRowBuilder().addComponents(button1, button2, button3, button4, button5, button6, button7);
+        const actionRow = new ActionRowBuilder().addComponents(button1, button2, button3, button5, button6);
 
         await message.channel.send({ embeds: [embed], components: [actionRow] });
     }
@@ -280,21 +276,6 @@ client.on("interactionCreate", async (interaction) => {
                 interaction.reply({ content: 'Role added successfully!', ephemeral: true });
             }
         }
-        if (interaction.customId == '15k') {
-            const member = interaction.guild.members.cache.get(interaction.user.id);
-            if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
-            }
-            const roleId = config.fifteenkRole;
-            const role = member.guild.roles.cache.get(roleId);
-            if (member.roles.cache.has(roleId)) {
-                await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
-            } else {
-                await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
-            }
-        }
         if (interaction.customId == '20k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
@@ -316,21 +297,6 @@ client.on("interactionCreate", async (interaction) => {
                 return interaction.reply({ content: 'Member not found!', ephemeral: true });
             }
             const roleId = config.thirtykRole;
-            const role = member.guild.roles.cache.get(roleId);
-            if (member.roles.cache.has(roleId)) {
-                await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
-            } else {
-                await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
-            }
-        }
-        if (interaction.customId == '40k') {
-            const member = interaction.guild.members.cache.get(interaction.user.id);
-            if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
-            }
-            const roleId = config.fortykRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
