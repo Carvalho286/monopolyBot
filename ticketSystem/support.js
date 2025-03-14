@@ -55,7 +55,7 @@ module.exports = {
 
     interaction.reply({
       content: "Support ticket creation embed sent successfully.",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral 
     });
 
     const collector = ticketChannel.createMessageComponentCollector({
@@ -73,7 +73,7 @@ module.exports = {
       if (existingChannel) {
         await buttonInteraction.reply({
           content: "You already have an open ticket!",
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral 
         });
         return;
       }
@@ -126,7 +126,7 @@ module.exports = {
 
       await buttonInteraction.reply({
         content: `Your support ticket has been created: ${ticketChannel}`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral 
       });
 
       const ticketCollector = ticketChannel.createMessageComponentCollector({
@@ -167,7 +167,7 @@ module.exports = {
           await closeInteraction.reply({
             content:
               "The ticket has been closed and a transcript has been sent.",
-            ephemeral: true,
+              flags: MessageFlags.Ephemeral 
           });
 
           await ticketChannel.delete();

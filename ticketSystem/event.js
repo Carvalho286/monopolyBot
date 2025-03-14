@@ -48,7 +48,7 @@ module.exports = {
         console.error("The specified channel for tickets was not found.");
         await interaction.reply({
           content: "Failed to find the ticket channel.",
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral 
         });
         return;
       }
@@ -60,7 +60,7 @@ module.exports = {
 
       await interaction.reply({
         content: "Ticket creation embed sent successfully.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral 
       });
 
       const collector = ticketChannel.createMessageComponentCollector({
@@ -79,7 +79,7 @@ module.exports = {
           if (existingChannel) {
             await buttonInteraction.reply({
               content: "You already have an open ticket!",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral 
             });
             return;
           }
@@ -132,7 +132,7 @@ module.exports = {
 
           await buttonInteraction.reply({
             content: `Your ticket has been created: ${newTicketChannel}`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral 
           });
 
           const ticketCollector = newTicketChannel.createMessageComponentCollector({
@@ -173,7 +173,7 @@ module.exports = {
 
                 await closeInteraction.reply({
                   content: "The ticket has been closed and a transcript has been sent.",
-                  ephemeral: true,
+                  flags: MessageFlags.Ephemeral 
                 });
 
                 await newTicketChannel.delete();
@@ -187,7 +187,7 @@ module.exports = {
           if (!buttonInteraction.replied) {
             await buttonInteraction.reply({
               content: "An error occurred while creating your ticket.",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral 
             });
           }
         }
@@ -197,7 +197,7 @@ module.exports = {
       if (!interaction.replied) {
         await interaction.reply({
           content: "An unexpected error occurred while processing your request.",
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral 
         });
       }
     }

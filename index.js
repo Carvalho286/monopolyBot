@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const {MessageFlags} = require('discord.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
 const client = new Discord.Client({
@@ -56,7 +57,7 @@ client.on('ready', async () => {
         return;
     }
 
-    const reportMessage = "O bot acabou de ficar online, a cada 24h vais receber um report com quantos membros entraram e sairam do server."
+    const reportMessage = "O bot acabou de ficar online, a cada 1 semana vais receber um report com quantos membros entraram e sairam do server."
 
     await kobackUser.send(reportMessage);
     await pilotoUser.send(reportMessage);
@@ -184,7 +185,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.customId == 'verify_button') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
 
             const unverifiedRoleId = config.unverifiedId; 
@@ -192,118 +193,118 @@ client.on("interactionCreate", async (interaction) => {
             if (!member.roles.cache.has(unverifiedRoleId)) {
                 return interaction.reply({
                     content: 'You are already verified!',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral 
                 });
             }
             try {
                 await verificationCommand.execute(interaction); 
             } catch (error) {
-                await interaction.reply({ content: 'Error!', ephemeral: true });
+                await interaction.reply({ content: 'Error!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == 'gameUpdate') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.gameUpdateRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Game updates role removed!', ephemeral: true });
+                interaction.reply({ content: 'Game updates role removed!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Game updates role added!', ephemeral: true });
+                interaction.reply({ content: 'Game updates role added!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId =='serviceUpdate') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.serviceUpdateRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Service updates role removed!', ephemeral: true });
+                interaction.reply({ content: 'Service updates role removed!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Service updates role added!', ephemeral: true });
+                interaction.reply({ content: 'Service updates role added!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == '1k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.onekRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role removed successfully!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role added successfully!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == '5k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.fivekRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role removed successfully!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role added successfully!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == '10k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.tenkRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role removed successfully!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role added successfully!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == '20k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.twentykRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role removed successfully!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role added successfully!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.customId == '30k') {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
             const roleId = config.thirtykRole;
             const role = member.guild.roles.cache.get(roleId);
             if (member.roles.cache.has(roleId)) {
                 await member.roles.remove(role);
-                interaction.reply({ content: 'Role removed successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role removed successfully!', flags: MessageFlags.Ephemeral  });
             } else {
                 await member.roles.add(role);
-                interaction.reply({ content: 'Role added successfully!', ephemeral: true });
+                interaction.reply({ content: 'Role added successfully!', flags: MessageFlags.Ephemeral  });
             }
         }
     }
@@ -336,7 +337,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.commandName === "verify") {
             const member = interaction.guild.members.cache.get(interaction.user.id);
             if (!member) {
-                return interaction.reply({ content: 'Member not found!', ephemeral: true });
+                return interaction.reply({ content: 'Member not found!', flags: MessageFlags.Ephemeral  });
             }
 
             const unverifiedRoleId = config.unverifiedId; 
@@ -344,13 +345,13 @@ client.on("interactionCreate", async (interaction) => {
             if (!member.roles.cache.has(unverifiedRoleId)) {
                 return interaction.reply({
                     content: 'You are already verified!',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral 
                 });
             }
             try {
                 await verificationCommand.execute(interaction); 
             } catch (error) {
-                await interaction.reply({ content: 'Error!', ephemeral: true });
+                await interaction.reply({ content: 'Error!', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "support") {
@@ -358,7 +359,7 @@ client.on("interactionCreate", async (interaction) => {
                 await supportCommand.execute(interaction);
             } catch (error) {
                 console.error('Error executing support command:', error);
-                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+                await interaction.reply({ content: 'There was an error while executing the command.', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "sticker") {
@@ -366,7 +367,7 @@ client.on("interactionCreate", async (interaction) => {
                 await stickerCommand.execute(interaction);
             } catch (error) {
                 console.error('Error executing support command:', error);
-                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+                await interaction.reply({ content: 'There was an error while executing the command.', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "event") {
@@ -374,7 +375,7 @@ client.on("interactionCreate", async (interaction) => {
                 await eventCommand.execute(interaction);
             } catch (error) {
                 console.error('Error executing support command:', error);
-                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+                await interaction.reply({ content: 'There was an error while executing the command.', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "bar") {
@@ -382,7 +383,7 @@ client.on("interactionCreate", async (interaction) => {
                 await barCommand.execute(interaction);
             } catch (error) {
                 console.error('Error executing support command:', error);
-                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+                await interaction.reply({ content: 'There was an error while executing the command.', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "dice") {
@@ -390,14 +391,14 @@ client.on("interactionCreate", async (interaction) => {
                 await diceCommand.execute(interaction);
             } catch (error) {
                 console.error('Error executing support command:', error);
-                await interaction.reply({ content: 'There was an error while executing the command.', ephemeral: true });
+                await interaction.reply({ content: 'There was an error while executing the command.', flags: MessageFlags.Ephemeral  });
             }
         }
         if (interaction.commandName === "client") {
             if (!allowedUsers.includes(interaction.user.id)) {
                 return interaction.reply({
                     content: 'You do not have permission to do that lol.',
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral 
                 });
             }
 
@@ -432,7 +433,7 @@ setInterval(async () => {
         }
 
         const reportMessage = `
-            **Daily Report:**
+            **Weekly Report:**
             - Users joined: ${usersJoined}
             - Users left: ${usersLeft}
         `;
@@ -445,6 +446,6 @@ setInterval(async () => {
     } catch (error) {
         console.error('Error sending daily report:', error);
     }
-}, 86400000);
+}, 604800000);
 
 client.login(config.token);

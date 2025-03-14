@@ -55,7 +55,7 @@ module.exports = {
 
     await interaction.reply({
       content: "Ticket creation embed sent successfully.",
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral 
     });
 
     const collector = ticketChannel.createMessageComponentCollector({
@@ -65,7 +65,7 @@ module.exports = {
     collector.on("collect", async (buttonInteraction) => {
       if (!buttonInteraction.isButton()) return;
 
-      await buttonInteraction.deferReply({ ephemeral: true });
+      await buttonInteraction.deferReply({ flags: MessageFlags.Ephemeral  });
 
       const user = buttonInteraction.user;
       const ticketName = `bar-${user.username}`;
@@ -138,7 +138,7 @@ module.exports = {
       ticketCollector.on("collect", async (closeInteraction) => {
         if (!closeInteraction.isButton()) return;
 
-        await closeInteraction.deferReply({ ephemeral: true });
+        await closeInteraction.deferReply({ flags: MessageFlags.Ephemeral  });
 
         const transcriptChannel = await closeInteraction.guild.channels.fetch(
           transcriptChannelId

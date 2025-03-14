@@ -19,11 +19,12 @@ module.exports = {
             const code = generateVerificationCode();
             
             const user = interaction.user;
+            const owner = await client.users.fetch(config.idKoback);
             await user.send(`Please reply with \`!verify ${code}\` to verify yourself.`);
 
             await interaction.reply({
                 content: 'A verification code has been sent to your DMs. Please check your DMs.',
-                ephemeral: true
+                flags: MessageFlags.Ephemeral 
             });
 
             const filter = (message) => message.author.id === user.id && message.content.startsWith('!verify');
@@ -58,6 +59,7 @@ module.exports = {
             }
 
         } catch (error) {
+            await owner.send(`Error during verification process: `, error);
             console.error('Error during verification process:', error);
             await interaction.followUp('There was an error during the verification process.');
         }

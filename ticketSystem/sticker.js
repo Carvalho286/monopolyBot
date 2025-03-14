@@ -48,7 +48,7 @@ module.exports = {
         console.error("The specified channel for tickets was not found.");
         await interaction.reply({
           content: "Ticket channel not found. Please check the configuration.",
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral 
         });
         return;
       }
@@ -60,7 +60,7 @@ module.exports = {
 
       await interaction.reply({
         content: "Ticket creation embed sent successfully.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral 
       });
 
       const collector = ticketChannel.createMessageComponentCollector({
@@ -79,7 +79,7 @@ module.exports = {
           if (existingChannel) {
             await buttonInteraction.reply({
               content: "You already have an open ticket!",
-              ephemeral: true,
+              flags: MessageFlags.Ephemeral 
             });
             return;
           }
@@ -132,7 +132,7 @@ module.exports = {
 
           await buttonInteraction.reply({
             content: `Your ticket has been created: ${newTicketChannel}`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral 
           });
 
           const ticketCollector = newTicketChannel.createMessageComponentCollector({
@@ -150,7 +150,7 @@ module.exports = {
                 await closeInteraction.reply({
                   content:
                     "Transcript channel not found. Contact an admin for assistance.",
-                  ephemeral: true,
+                    flags: MessageFlags.Ephemeral 
                 });
                 return;
               }
@@ -177,7 +177,7 @@ module.exports = {
 
               await closeInteraction.reply({
                 content: "The ticket has been closed and a transcript has been sent.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral 
               });
 
               await newTicketChannel.delete();
@@ -194,7 +194,7 @@ module.exports = {
       if (interaction.deferred || interaction.replied) return;
       await interaction.reply({
         content: "An error occurred while executing this command.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral 
       });
     }
   },
