@@ -25,7 +25,7 @@ module.exports = {
 
         const embed = new Discord.EmbedBuilder()
             .setColor(colors.yellow)
-            .setTitle(`📊 **Points Information** 📊`)
+            .setTitle(`📊 **Points Information**`)
             .setDescription(`Here are the details for **${user.username}**`)
             .setThumbnail(user.displayAvatarURL())
             .addFields(
