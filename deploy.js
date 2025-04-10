@@ -98,6 +98,46 @@ const slashRegister = async () => {
                             required: false
                         }
                     ]
+                },
+                {
+                    name: 'leaderboard',
+                    description: 'View the top users based on points.'
+                },
+                {
+                    name: 'addpoints',
+                    description: 'Add points to a user.',
+                    options: [
+                        {
+                            name: 'user',
+                            type: 6,
+                            description: 'User to add points to',
+                            required: true
+                        },
+                        {
+                            name: 'quantity',
+                            type: 4,
+                            description: 'Number of points to add',
+                            required: true
+                        }
+                    ]
+                },
+                {
+                    name: 'removepoints',
+                    description: 'Remove points from a user.',
+                    options: [
+                        {
+                            name: 'user',
+                            type: 6, 
+                            description: 'User to remove points from',
+                            required: true
+                        },
+                        {
+                            name: 'quantity',
+                            type: 4, 
+                            description: 'Number of points to remove',
+                            required: true
+                        }
+                    ]
                 }
             ]
         });

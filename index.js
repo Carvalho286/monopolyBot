@@ -5,6 +5,9 @@ const { addPoints } = require('./pointsSystem/pointsManager');
 const inviteTracker = require('./pointsSystem/inviteTracker');
 const addcompra = require('./pointsSystem/addCompra');
 const points = require('./pointsSystem/points.js');
+const addpoints = require('./pointsSystem/addPoints.js');
+const removepoints = require('./pointsSystem/removePoints.js');
+const leaderboard = require('./pointsSystem/leaderboard.js');
 const fs = require('fs');
 const client = new Discord.Client({
     intents: [
@@ -422,10 +425,37 @@ client.on("interactionCreate", async (interaction) => {
             }
         }
         if (interaction.commandName === "addcompra") {
+            if (!allowedUsers.includes(interaction.user.id)) {
+                return interaction.reply({
+                    content: 'You do not have permission to do that lol.',
+                    flags: MessageFlags.Ephemeral 
+                });
+            }
             await addcompra.execute(interaction);
         }
         if (interaction.commandName === "points") {
             await points.execute(interaction);
+        }
+        if (interaction.commandName === "addpoints") {
+            if (!allowedUsers.includes(interaction.user.id)) {
+                return interaction.reply({
+                    content: 'You do not have permission to do that lol.',
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+            await addpoints.execute(interaction);
+        }
+        if (interaction.commandName === "removepoints") {
+            if (!allowedUsers.includes(interaction.user.id)) {
+                return interaction.reply({
+                    content: 'You do not have permission to do that lol.',
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+            await removepoints.execute(interaction);
+        }  
+        if (interaction.commandName === "leaderboard") {
+            await leaderboard.execute(interaction);
         }
     }
 });

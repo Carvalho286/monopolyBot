@@ -34,6 +34,7 @@ module.exports = {
             if (inviteUsed && inviteUsed.inviter) {
                 const inviter = inviteUsed.inviter;
                 const newTotal = addPoints(inviter.id, 2);
+                
             }
 
             fetchInvites(member.guild);

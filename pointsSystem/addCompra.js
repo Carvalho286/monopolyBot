@@ -1,5 +1,7 @@
+const Discord = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
-const { addPoints } = require('./pointsManager'); // Certifique-se de que 'addPoints' esteja correto
+const { addPoints } = require('./pointsManager');
+const colors = require('../colors.json'); // Assuming you have a colors.json file with your color codes
 
 const purchases = {
     "sticker": 1,
@@ -29,29 +31,30 @@ module.exports = {
 
     async execute(interaction) {
         const user = interaction.options.getUser('user');
-        const purchaseType = interaction.options.getString('purchase'); // Obter o tipo de compra
+        const purchaseType = interaction.options.getString('purchase');
 
-        // Debug: Verificar o que está a ser recebido
         console.log(`User: ${user.username} | Purchase: ${purchaseType}`);
 
-        // Verificar se a compra é válida
         if (!purchaseType || !purchases[purchaseType]) {
             console.log("Invalid purchase type, no points to assign.");
             return interaction.reply({ content: "Invalid purchase type, no points to assign." });
         }
 
-        // Obter a quantidade de pontos para a compra
         const points = purchases[purchaseType];
 
-        // Adicionar os pontos ao utilizador
         const newTotal = addPoints(user.id, points);
 
-        // Debug: Verificar se os pontos foram atualizados corretamente
-        console.log(`${user.username} has received ${points} points. New total: ${newTotal}`);
+        const embed = new Discord.EmbedBuilder()
+            .setColor(colors.yellow)
+            .setTitle('Points Awarded!')
+            .setDescription(`${user.username} has received ${points} points for the purchase of ${purchaseType}.`)
+            .addFields({ name: 'New Total Points:', value: `${newTotal} points`, inline: true })
+            .setThumbnail(user.displayAvatarURL({ dynamic: true })) 
+            .setFooter({ text: 'Lucky Roll', iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
+            .setTimestamp(); 
 
-        // Responder ao utilizador
         await interaction.reply({
-            content: `${user.username} has received ${points} points for a purchase. New total: ${newTotal} points.`,
+            embeds: [embed]
         });
     }
 };
