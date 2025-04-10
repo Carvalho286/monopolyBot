@@ -1,6 +1,10 @@
 const Discord = require('discord.js');
 const {MessageFlags} = require('discord.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { addPoints } = require('./pointsSystem/pointsManager');
+const inviteTracker = require('./pointsSystem/inviteTracker');
+const addcompra = require('./pointsSystem/addCompra');
+const points = require('./pointsSystem/points.js');
 const fs = require('fs');
 const client = new Discord.Client({
     intents: [
@@ -45,6 +49,7 @@ client.on('ready', async () => {
     console.log(`----------------------------------------------`);
     console.log(`${client.user.username} está online!`);
     console.log(`----------------------------------------------`);
+    inviteTracker.execute(client);
 
     const kobackUser = await client.users.fetch(config.idKoback);
     const pilotoUser = await client.users.fetch(config.idPiloto);
@@ -415,6 +420,12 @@ client.on("interactionCreate", async (interaction) => {
             } else {
                 interaction.reply("Not found.");
             }
+        }
+        if (interaction.commandName === "addcompra") {
+            await addcompra.execute(interaction);
+        }
+        if (interaction.commandName === "points") {
+            await points.execute(interaction);
         }
     }
 });

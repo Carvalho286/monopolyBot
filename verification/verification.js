@@ -1,3 +1,4 @@
+const { MessageFlags } = require('discord.js');
 const fs = require('fs');
 
 let config;
@@ -17,51 +18,63 @@ module.exports = {
     async execute(interaction) {
         try {
             const code = generateVerificationCode();
-            
             const user = interaction.user;
-            const owner = await client.users.fetch(config.idKoback);
-            await user.send(`Please reply with \`!verify ${code}\` to verify yourself.`);
+
+            let dm;
+            try {
+                dm = await user.createDM();
+                await dm.send(`Please reply with \`!verify ${code}\` to verify yourself.`);
+            } catch (error) {
+                await interaction.reply({
+                    content: "I couldn't send you a DM. Please enable DMs and try again.",
+                    flags: MessageFlags.Ephemeral
+                });
+                return;
+            }
 
             await interaction.reply({
                 content: 'A verification code has been sent to your DMs. Please check your DMs.',
-                flags: MessageFlags.Ephemeral 
+                flags: MessageFlags.Ephemeral
             });
 
             const filter = (message) => message.author.id === user.id && message.content.startsWith('!verify');
-            const collected = await user.dmChannel.awaitMessages({ filter, max: 1, time: 60000, errors: ['time'] });
+            const collected = await dm.awaitMessages({ filter, max: 1, time: 60000 });
 
-            const userReply = collected.first().content.trim();
+            const userReply = collected.first()?.content.trim();
 
             if (userReply === `!verify ${code}`) {
-                const role = interaction.guild.roles.cache.find(r => r.id === config.verifiedId);
-                const removeRole = interaction.guild.roles.cache.find(r => r.id === config.unverifiedId)
+                const role = interaction.guild.roles.cache.get(config.verifiedId);
+                const removeRole = interaction.guild.roles.cache.get(config.unverifiedId);
+
                 if (!role) {
-                    await interaction.followUp('The role does not exist.');
+                    await interaction.followUp({ content: 'The role does not exist.', flags: MessageFlags.Ephemeral });
                     return;
                 }
 
                 if (!interaction.guild.members.me.permissions.has('MANAGE_ROLES')) {
-                    await interaction.followUp('I do not have permission to assign roles.');
+                    await interaction.followUp({ content: 'I do not have permission to assign roles.', flags: MessageFlags.Ephemeral });
                     return;
                 }
+
+                const member = await interaction.guild.members.fetch(user.id);
+                await member.roles.add(role);
+                await member.roles.remove(removeRole);
 
                 const logChannel = interaction.guild.channels.cache.get(config.logChatId);
                 if (logChannel) {
                     await logChannel.send(`${user.tag} has been verified and assigned the verified role.`);
                 }
 
-                await interaction.guild.members.cache.get(user.id).roles.add(role);
-                await interaction.guild.members.cache.get(user.id).roles.remove(removeRole);
-                await user.send(`${user.tag} you have been verified.`);
-                
+                await dm.send(`You have been verified.`);
             } else {
-                await user.send('The verification code you entered is incorrect. Please send /verify on group again');
+                await dm.send('The verification code you entered is incorrect. Please send /verify in the group again.');
             }
 
         } catch (error) {
-            await owner.send(`Error during verification process: `, error);
             console.error('Error during verification process:', error);
-            await interaction.followUp('There was an error during the verification process.');
+            const owner = await interaction.client.users.fetch(config.idKoback);
+            await owner.send(`Error during verification process: ${error.message}`);
+            await interaction.followUp({ content: 'There was an error during the verification process.', flags: MessageFlags.Ephemeral });
         }
     },
 };

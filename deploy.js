@@ -63,6 +63,42 @@ const slashRegister = async () => {
                     name: 'dice',
                     description: 'Send a dice boosting ticket creation embed.',
                 },
+                {
+                    name: 'addcompra',
+                    description: 'Give points to user for a purchase.',
+                    options: [
+                        {
+                            name: 'user',
+                            type: 6, // USER
+                            description: 'User',
+                            required: true
+                        },
+                        {
+                            name: 'purchase',
+                            type: 3, // STRING
+                            description: 'Type of product',
+                            required: true,
+                            choices: [
+                                { name: 'Sticker', value: 'sticker' },
+                                { name: 'Carry', value: 'carry' },
+                                { name: 'Bar', value: 'bar' },
+                                { name: 'Dice', value: 'dice' },
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'points',
+                    description: 'View the points of a user.',
+                    options: [
+                        {
+                            name: 'user',
+                            type: 6, // USER
+                            description: 'User to check points for',
+                            required: false
+                        }
+                    ]
+                }
             ]
         });
     } catch (err) {
