@@ -3,10 +3,12 @@ const {MessageFlags} = require('discord.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { addPoints } = require('./pointsSystem/pointsManager');
 const inviteTracker = require('./pointsSystem/inviteTracker');
+const { getAllUsers } = require('./pointsSystem/pointsManager.js');
 const addcompra = require('./pointsSystem/addCompra');
 const points = require('./pointsSystem/points.js');
 const addpoints = require('./pointsSystem/addPoints.js');
 const removepoints = require('./pointsSystem/removePoints.js');
+const resetpoints = require('./pointsSystem/resetPoints.js');
 const leaderboard = require('./pointsSystem/leaderboard.js');
 const fs = require('fs');
 const client = new Discord.Client({
@@ -79,7 +81,9 @@ client.on('guildMemberAdd', async (member) => {
         const verificationRoleId = config.verificationRole
         const notificationsRoleId = config.notificationRole;
         const otherTagsRoleId = config.otherTagsRole;
+        const clientRoleId = config.clientRole;
         const role = member.guild.roles.cache.get(roleId);
+        const clientRole = member.guild.roles.cache.get(clientRoleId);
         const tagsRole = member.guild.roles.cache.get(tagsRoleId);
         const verificationRole = member.guild.roles.cache.get(verificationRoleId);
         const notificationsRole = member.guild.roles.cache.get(notificationsRoleId);
@@ -94,6 +98,7 @@ client.on('guildMemberAdd', async (member) => {
         await member.roles.add(verificationRole);
         await member.roles.add(tagsRole);
         await member.roles.add(notificationsRole);
+        await member.roles.add(clientRole);
         await member.roles.add(otherTagsRole);
     } catch (error) {
         console.error('Error assigning role to new member:', error);
@@ -454,6 +459,15 @@ client.on("interactionCreate", async (interaction) => {
             }
             await removepoints.execute(interaction);
         }  
+        if (interaction.commandName === "resetpoints") {
+            if (!allowedUsers.includes(interaction.user.id)) {
+                return interaction.reply({
+                    content: 'You do not have permission to do that lol.',
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+            await resetpoints.execute(interaction);
+        }  
         if (interaction.commandName === "leaderboard") {
             await leaderboard.execute(interaction);
         }
@@ -488,5 +502,53 @@ setInterval(async () => {
         console.error('Error sending daily report:', error);
     }
 }, 604800000);
+
+setInterval(async () => {
+    try {
+        const guild = client.guilds.cache.get(config.serverId);
+        if (!guild) return console.error('Guild not found.');
+
+        const users = getAllUsers();
+        for (const { userId, points } of users) {
+            try {
+                const member = await guild.members.fetch(userId);
+                if (!member) continue;
+
+                const localInvestorId = config.localInvestorRole;
+                const cityTycoonId = config.cityTycoonRole;
+                const realEstateBaronId = config.realEstateBaronRole;
+                const boardLegendId = config.boardLegendRole;
+                const localInvestorRole = member.guild.roles.cache.get(localInvestorId);
+                const cityTycoonRole = member.guild.roles.cache.get(cityTycoonId);
+                const realEstateBaronRole = member.guild.roles.cache.get(realEstateBaronId);
+                const boardLegendRole = member.guild.roles.cache.get(boardLegendId);
+    
+                await member.roles.remove([
+                    localInvestorRole,
+                    cityTycoonRole,
+                    realEstateBaronRole,
+                    boardLegendRole
+                ]);
+    
+                if (points >= 160) {
+                    await member.roles.add(boardLegendRole);
+                } else if (points >= 80) {
+                    await member.roles.add(realEstateBaronRole);
+                } else if (points >= 40) {
+                    await member.roles.add(cityTycoonRole);
+                } else if (points >= 20) {
+                    await member.roles.add(localInvestorRole);
+                }
+    
+            } catch (err) {
+                console.error(`Error processing user ${userId}:`, err.message);
+            }
+        }
+
+        console.log('Peoples rank checked and updated successfully.');
+    } catch (error) {
+        console.error('Error checking peoples rank:', error);
+    }
+}, 21600000); // 6 hours in milliseconds
 
 client.login(config.token);

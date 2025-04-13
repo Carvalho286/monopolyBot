@@ -33,8 +33,8 @@ module.exports = {
 
             if (inviteUsed && inviteUsed.inviter) {
                 const inviter = inviteUsed.inviter;
-                const newTotal = addPoints(inviter.id, 2);
-                
+                const newTotal = addPoints(inviter.id, 1);
+                // ! FAZER EMBED BONITO PARA QUEM CONVIDOU
             }
 
             fetchInvites(member.guild);

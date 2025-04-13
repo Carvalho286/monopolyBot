@@ -33,9 +33,8 @@ module.exports = {
                 { name: '🏆 Position', value: `**${position}**/${totalUsers}`, inline: true },
                 //{ name: '👤 User', value: `${user.username}`, inline: false },
             )
-            .setFooter({ text: 'Lucky Roll', iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
+            .setFooter({ text: `Lucky Roll - asked by ${interaction.user.username}`, iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
             .setTimestamp()
-            .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() });
         
 
         if (points === null) {

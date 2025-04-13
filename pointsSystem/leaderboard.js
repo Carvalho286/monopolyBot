@@ -22,9 +22,8 @@ module.exports = {
             .setTitle('🏆 **Leaderboard**')
             .setDescription('Here are the top users based on points!')
             .setThumbnail('https://cdn-icons-png.flaticon.com/512/3150/3150313.png') 
-            .setFooter({ text: 'Lucky Roll', iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
+            .setFooter({ text: `Lucky Roll - asked by ${interaction.user.username}`, iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
             .setTimestamp()
-            .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() });
 
             for (const user of topUsers.slice(0,5)) {
                 try {

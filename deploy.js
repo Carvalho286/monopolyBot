@@ -138,6 +138,10 @@ const slashRegister = async () => {
                             required: true
                         }
                     ]
+                },
+                {
+                    name: 'resetpoints',
+                    description: 'Reset all users\' points.',
                 }
             ]
         });

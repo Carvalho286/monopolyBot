@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const { SlashCommandBuilder } = require('discord.js');
 const { addPoints } = require('./pointsManager');
-const colors = require('../colors.json'); // Assuming you have a colors.json file with your color codes
+const colors = require('../colors.json');
 
 const purchases = {
     "sticker": 1,
-    "carry": 5,
-    "bar": 10,
-    "dice": 20
+    "carry": 3,
+    "bar": 6,
+    "dice": 40
 };
 
 module.exports = {
@@ -50,7 +50,7 @@ module.exports = {
             .setDescription(`${user.username} has received ${points} points for the purchase of ${purchaseType}.`)
             .addFields({ name: 'New Total Points:', value: `${newTotal} points`, inline: true })
             .setThumbnail(user.displayAvatarURL({ dynamic: true })) 
-            .setFooter({ text: 'Lucky Roll', iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
+            .setFooter({ text: `Lucky Roll - done by ${interaction.user.username}`, iconURL: 'https://raw.githubusercontent.com/Carvalho286/monopolyBot/refs/heads/main/logo.png' })
             .setTimestamp(); 
 
         await interaction.reply({

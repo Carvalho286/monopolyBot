@@ -74,10 +74,17 @@ function getCurrentPositionInLeaderboard(userId) {
     };
 }
 
+function resetAllPoints() {
+    points = {};
+    savePoints();
+}
+
+
 module.exports = {
     addPoints,
     removePoints,
     getPoints,
+    resetAllPoints,
     getAllUsers,
     getCurrentPositionInLeaderboard
 };
